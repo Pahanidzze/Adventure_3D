@@ -12,12 +12,11 @@ public class PauseMenu : MonoBehaviour
         if (PauseCanvas == null) return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            IsPause = !IsPause;
-            if (IsPause == false)
+            if (IsPause == true)
             {
                 Resume();
             }
-            else if (IsPause == true)
+            else
             {
                 Pause();
             }
@@ -26,17 +25,36 @@ public class PauseMenu : MonoBehaviour
 
     private void Pause()
     {
+        IsPause = !IsPause;
         Time.timeScale = 0;
         PauseCanvas.SetActive(true);
         FPC.enabled = false;
         AudioListener.pause = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void Resume()
     {
+        IsPause = !IsPause;
         Time.timeScale = 1;
         PauseCanvas.SetActive(false);
         FPC.enabled = true;
         AudioListener.pause = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void CursorSwitch()
+    {
+        Cursor.visible = !Cursor.visible;
+    }
+
+    private void OnGUI()
+    {
+        if (IsPause == false)
+        {
+            Cursor.visible = false;
+        }
     }
 }
